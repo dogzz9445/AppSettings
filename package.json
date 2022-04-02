@@ -1,0 +1,21 @@
+{
+    "name": "com.mini.appsettings",
+    "version": "0.0.1",
+    "displayName": "Mini.AppSettings",
+    "description": "A dependency injection tool for app settings using provider pattern",
+    "unity": "2020.3",
+    "unityRelease": "23f1",
+    "documentationUrl": "https://example.com/",
+    "keywords": [
+      "unity",
+      "configuration",
+      "appsettings"
+    ],
+    "author": {
+      "name": "Dongmin Jang",
+      "email": "dogzz9445@gmail.com",
+      "url": "https://www.unity3d.com"
+    },
+    "license": "MIT"
+  }
+  
