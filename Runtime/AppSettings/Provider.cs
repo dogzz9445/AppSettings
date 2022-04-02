@@ -6,19 +6,20 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json;
 
+#nullable enable
 namespace Mini.AppSettings
 {
-    public class Provider<T> : GlobalStateNotifier<T> 
-        where T : class, INotifyPropertyChanged
+    public class Provider<T> : GlobalStateNotifier<T>
+        where T : class, INotifyPropertyChanged, new()
     {
-        private static Provider<T> _global;
+        private static Provider<T> _global = null;
         public static new Provider<T> Global
         {
             get
             {
                 if (_global == null)
                 {
-                    _global = default;
+                    _global = new Provider<T>();
                 }
                 return _global;
             }
@@ -66,7 +67,7 @@ namespace Mini.AppSettings
         {
             if (!File.Exists(AppSettingsFullFileName))
             {
-                AppSettings = default;
+                AppSettings = new T();
             }
             else
             {

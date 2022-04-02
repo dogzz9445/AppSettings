@@ -3,15 +3,12 @@ using UnityEngine;
 
 namespace Mini.AppSettings
 {
-    public abstract class ConsumerMonoBehaviour<T, S> : MonoBehaviour, INotifyPropertyChanged
-        where S : INotifyPropertyChanged
-        where T : GlobalStateNotifier<S>
+    public abstract class ConsumerMonoBehaviour<T> : MonoBehaviour, INotifyPropertyChanged
+        where T : class, INotifyPropertyChanged, new()
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         protected virtual void Awake()
         {
-            GlobalStateNotifier<S>.Global.PropertyChanged += PropertyChanged;
+            Provider<T>.Global.PropertyChanged += PropertyChanged;
         }
 
         protected virtual void Start()
@@ -22,8 +19,10 @@ namespace Mini.AppSettings
 
         protected virtual void OnDestroy()
         {
-            GlobalStateNotifier<S>.Global.PropertyChanged -= PropertyChanged;
+            Provider<T>.Global.PropertyChanged -= PropertyChanged;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected abstract void OnPropertyChanged(object sender, PropertyChangedEventArgs e);
     }

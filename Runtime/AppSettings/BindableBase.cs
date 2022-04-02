@@ -2,6 +2,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
+#nullable enable
 namespace Mini.AppSettings
 {
     public class BindableBase : INotifyPropertyChanged
