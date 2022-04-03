@@ -14,6 +14,13 @@
     "email": "dogzz9445@gmail.com",
     "url": "https://github.com/dogzz9445/AppSettings"
   },
+  "samples": [
+    {
+      "displayName": "App Settings Model and Manager",
+      "description": "A sample scripts and scene for app settings",
+      "path": "Samples~/AppSettings"
+    }
+  ],
   "license": "MIT",
   "unity": "2020.3"
 }

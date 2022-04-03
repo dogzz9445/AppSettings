@@ -13,7 +13,7 @@ namespace Mini.AppSettings
         where T : class, INotifyPropertyChanged, new()
     {
         private static Provider<T> _global = null;
-        public static new Provider<T> Global
+        public static Provider<T> Global
         {
             get
             {
@@ -54,13 +54,13 @@ namespace Mini.AppSettings
             string? filename = null)
         {
             _appSettingsFilePath = filepath ?? Application.dataPath;
-            _appSettingsFileName = filename ?? "app_settings.json";
+            _appSettingsFileName = filename ?? "StreamingAssets/app_settings.json";
 
             IsAutoSave = true;
 
-            Load();
+            this.PropertyChanged += OnPropertyChanged;
 
-            this.PropertyChanged += OnPropertyChanged; 
+            Load();
         }
 
         public void Load()
@@ -71,7 +71,7 @@ namespace Mini.AppSettings
             }
             else
             {
-                AppSettings = ReadFile<T>(AppSettingsFullFileName);
+                AppSettings = ReadFile(AppSettingsFullFileName);
             }
         }
 
@@ -93,20 +93,20 @@ namespace Mini.AppSettings
             AutoSave();
         }
 
-        public A ReadFile<A>(string filename) where A : class
+        public T ReadFile(string filename)
         {
             if (File.Exists(filename))
             {
                 var json = File.ReadAllText(filename);
                 if (!string.IsNullOrEmpty(json))
                 {
-                    return JsonConvert.DeserializeObject<A>(json);
+                    return JsonConvert.DeserializeObject<T>(json);
                 }
             }
-            return null;
+            return new T();
         }
 
-        public async Task WriteFileAsync<A>(string fullFileName, A jsonObject)
+        public async Task WriteFileAsync(string fullFileName, T jsonObject)
         {
             var directoryName = Path.GetDirectoryName(fullFileName);
             if (!string.IsNullOrEmpty(directoryName))
