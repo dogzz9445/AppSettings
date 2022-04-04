@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json;
+using Mini.Utils;
 
 #nullable enable
 namespace Mini.AppSettings
@@ -25,109 +26,58 @@ namespace Mini.AppSettings
             }
         }
 
-        private T? _appSettings;
-        public T AppSettings 
+        private T? _context;
+        public T Context 
         { 
             get 
             {
-                if (_appSettings == null)
+                if (_context == null)
                 {
                     Load();
                 }
-                if (_appSettings == null)
+                if (_context == null)
                 {
-                    _appSettings = new T();
+                    _context = new T();
                 }
-                return _appSettings;
+                return _context;
             }
             set 
             {
-                SetObservableProperty(ref _appSettings, value);
+                SetObservableProperty(ref _context, value);
             }
         }
 
-        private string _appSettingsFilePath;
-        private string _appSettingsFileName;
-        public string AppSettingsFullFileName { get => Path.Combine(_appSettingsFilePath, _appSettingsFileName); }
+        private string _contextFilePath;
+        private string _contextFileName;
+        public string ContextFullFileName { get => Path.Combine(_contextFilePath, _contextFileName); }
         
-        private bool _isAutoSave;
-        public bool IsAutoSave { get => _isAutoSave; set => _isAutoSave = value; }
+        private bool _isSaveContext;
+        public bool IsSaveContext { get => _isSaveContext; set => _isSaveContext = value; }
 
         public Provider(
+            bool? isSaveContext = null,
             string? filepath = null, 
             string? filename = null)
         {
-            _appSettingsFilePath = filepath ?? Application.dataPath;
-            _appSettingsFileName = filename ?? "StreamingAssets/app_settings.json";
+            _isSaveContext = isSaveContext ?? true;
+            _contextFilePath = filepath ?? Application.dataPath;
+            _contextFileName = filename ?? "app_settings.json";
 
-            IsAutoSave = true;
-
-            this.PropertyChanged += OnPropertyChanged;
+            PropertyChanged += (s, e) => Save();
 
             Load();
         }
 
         public void Load()
         {
-            if (File.Exists(AppSettingsFullFileName))
-            {
-                AppSettings = new T();
-            }
-            else
-            {
-                AppSettings = ReadFile(AppSettingsFullFileName);
-            }
+            Context = MiniJsonHelper.ReadFileOrDefault<T>(ContextFullFileName);
         }
-
+        
         public async void Save()
         {
-            await WriteFileAsync(AppSettingsFullFileName, AppSettings);
-        }
-
-        private void AutoSave()
-        {
-            if (IsAutoSave)
+            if (IsSaveContext)
             {
-                Save();
-            }
-        }
-
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs eventArgs)
-        {
-            AutoSave();
-        }
-
-        public T ReadFile(string filename)
-        {
-            if (File.Exists(filename))
-            {
-                var json = File.ReadAllText(filename);
-                if (!string.IsNullOrEmpty(json))
-                {
-                    return JsonConvert.DeserializeObject<T>(json);
-                }
-            }
-            return new T();
-        }
-
-        public async Task WriteFileAsync(string fullFileName, T jsonObject)
-        {
-            var directoryName = Path.GetDirectoryName(fullFileName);
-            if (!string.IsNullOrEmpty(directoryName))
-            {
-                if (!Directory.Exists(directoryName))
-                {
-                    Directory.CreateDirectory(directoryName);
-                }
-            }
-            using (var file = File.CreateText(fullFileName))
-            {
-                using (var writer = new JsonTextWriter(file))
-                {
-                    string json = JsonConvert.SerializeObject(jsonObject, Formatting.Indented, 
-                        new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore } );
-                    await writer.WriteRawAsync(json);
-                }
+                await MiniJsonHelper.WriteFileAsync(ContextFullFileName, Context);
             }
         }
     }
