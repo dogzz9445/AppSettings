@@ -21,6 +21,9 @@
       "path": "Samples~/AppSettings"
     }
   ],
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "2.0.0"
+  },
   "license": "MIT",
   "unity": "2020.3"
 }
