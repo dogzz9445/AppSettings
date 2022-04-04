@@ -12,7 +12,7 @@ namespace Mini.AppSettings
     public class Provider<T> : GlobalStateNotifier<T>
         where T : class, INotifyPropertyChanged, new()
     {
-        private static Provider<T> _global = null;
+        private static Provider<T>? _global = null;
         public static Provider<T> Global
         {
             get
@@ -25,7 +25,7 @@ namespace Mini.AppSettings
             }
         }
 
-        private T _appSettings;
+        private T? _appSettings;
         public T AppSettings 
         { 
             get 
@@ -33,6 +33,10 @@ namespace Mini.AppSettings
                 if (_appSettings == null)
                 {
                     Load();
+                }
+                if (_appSettings == null)
+                {
+                    _appSettings = new T();
                 }
                 return _appSettings;
             }
@@ -65,7 +69,7 @@ namespace Mini.AppSettings
 
         public void Load()
         {
-            if (!File.Exists(AppSettingsFullFileName))
+            if (File.Exists(AppSettingsFullFileName))
             {
                 AppSettings = new T();
             }

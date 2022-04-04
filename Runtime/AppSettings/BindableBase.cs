@@ -2,7 +2,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-#nullable enable
 namespace Mini.AppSettings
 {
     public class BindableBase : INotifyPropertyChanged
@@ -52,7 +51,7 @@ namespace Mini.AppSettings
             return result;
         }
 
-        protected void RaisePropertyChangedEvent([CallerMemberName] string? propertyName = null)
+        protected void RaisePropertyChangedEvent([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -62,7 +61,7 @@ namespace Mini.AppSettings
             PropertyChanged?.Invoke(sender, eventArgs);
         }
 
-        private void RaisePropertyChangedEvent(object? sender, NotifyCollectionChangedEventArgs e)
+        private void RaisePropertyChangedEvent(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {
