@@ -1,6 +1,6 @@
 {
   "name": "com.mini.appsettings",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "displayName": "AppSettings",
   "description": "A app settings tool using provider pattern and dependency injection",
   "documentationUrl": "https://github.com/dogzz9445/AppSettings",
