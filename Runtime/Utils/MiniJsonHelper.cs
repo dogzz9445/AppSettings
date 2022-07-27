@@ -7,19 +7,6 @@ namespace Mini.Utils
 {
     public static class MiniJsonHelper
     {
-        public static T ReadFile<T>(string filename) where T : class
-        {
-            if (File.Exists(filename))
-            {
-                var json = File.ReadAllText(filename);
-                if (!string.IsNullOrEmpty(json))
-                {
-                    return JsonConvert.DeserializeObject<T>(json);
-                }
-            }
-            return null;
-        }
-
         public static T ReadFileOrDefault<T>(string filename) where T : new()
         {
             if (File.Exists(filename))
@@ -27,7 +14,12 @@ namespace Mini.Utils
                 var json = File.ReadAllText(filename);
                 if (!string.IsNullOrEmpty(json))
                 {
-                    return JsonConvert.DeserializeObject<T>(json);
+                    return JsonConvert.DeserializeObject<T>(json,
+                        new JsonSerializerSettings()
+                        {
+                            DefaultValueHandling = DefaultValueHandling.Populate,
+                            NullValueHandling = NullValueHandling.Ignore
+                        });
                 }
             }
             return new T();
