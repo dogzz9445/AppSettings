@@ -5,10 +5,10 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using Newtonsoft.Json;
-using Mini.Utils;
+using Mini.Settings.Utils;
 
 #nullable enable
-namespace Mini.AppSettings
+namespace Mini.Settings
 {
     public class Provider<T> : GlobalStateNotifier<T>
         where T : class, INotifyPropertyChanged, new()
