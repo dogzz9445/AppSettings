@@ -3,7 +3,7 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Mini.Utils
+namespace Mini.Settings.Utils
 {
     public static class MiniJsonHelper
     {
