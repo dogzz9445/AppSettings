@@ -60,7 +60,7 @@ namespace Mini.AppSettings
             string? filename = null)
         {
             _isSaveContext = isSaveContext ?? true;
-            _contextFilePath = filepath ?? Application.dataPath;
+            _contextFilePath = filepath ?? Application.streamingAssetsPath;
             _contextFileName = filename ?? "app_settings.json";
 
             PropertyChanged += (s, e) => Save();
